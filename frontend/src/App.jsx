@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { calculatePlanetWeight, getAccessiblePlanets, PREMIUM_TIERS } from './utils/planets';
 import { getRandomAstronomyPicture, getPlanetImage } from './utils/nasaApi';
 import PlanetCard from './components/PlanetCard';
 import { planets } from './utils/planets';
+
+// Lazy load the APOD component for better performance
+const ApodView = lazy(() => import('./components/ApodView'));
 
 function App() {
   const [earthWeight, setEarthWeight] = useState('70');
@@ -54,6 +57,20 @@ function App() {
       }
     }
   }, [premiumTier]);
+
+  // Effect to manage body class when modal is open
+  useEffect(() => {
+    if (showPaymentModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    // Cleanup
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [showPaymentModal]);
 
   // Preload planet images and track loading status
   useEffect(() => {
@@ -245,14 +262,14 @@ function App() {
       <div className="fixed inset-0 bg-[url('/stars.svg')] opacity-40 pointer-events-none"></div>
 
       {/* Header */}
-      <header className="bg-black/50 backdrop-blur-md border-b border-gray-800 py-4 px-6 flex justify-between items-center">
+      <header className="bg-black/50 backdrop-blur-md border-b border-gray-800 py-2 sm:py-4 px-3 sm:px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <div className="w-10 h-10 mr-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-300 to-indigo-600 flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-white absolute top-1 left-1"></div>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 mr-2 sm:mr-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-300 to-indigo-600 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white absolute top-1 left-1"></div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+          <h1 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
             Gravitas
           </h1>
         </div>
@@ -261,7 +278,8 @@ function App() {
         <div className="md:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(prev => !prev)}
-            className="text-gray-400 hover:text-white focus:outline-none"
+            className="text-gray-400 hover:text-white focus:outline-none p-1"
+            aria-label="Toggle menu"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -310,9 +328,10 @@ function App() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/60 backdrop-blur-md border-b border-gray-800"
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-black/80 backdrop-blur-md border-b border-gray-800 absolute top-[42px] left-0 right-0 z-50"
           >
-            <div className="flex flex-col p-3">
+            <div className="flex flex-col p-2">
               <button
                 onClick={() => {
                   setActiveTab('planets');
@@ -365,11 +384,11 @@ function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="h-full flex"
+              className="h-full flex flex-col md:flex-row"
             >
               {/* Left Panel - Calculator */}
-              <div className="w-[320px] bg-gray-900/70 backdrop-blur-md border-r border-gray-800 p-5 h-full overflow-y-auto">
-                <h2 className="text-xl font-bold text-white mb-6 text-center">Calculator</h2>
+              <div className="w-full md:w-[320px] bg-gray-900/70 backdrop-blur-md border-b md:border-r md:border-b-0 border-gray-800 p-5 overflow-y-auto max-h-[40vh] md:max-h-full md:h-full">
+                <h2 className="text-xl font-bold text-white mb-4 text-center">Calculator</h2>
 
                 {planetWeights.length === 0 ? (
                   // Clean centered initial UI
@@ -379,33 +398,39 @@ function App() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <div className="text-center mb-6">
-                      <h3 className="text-white text-lg font-medium mb-2">Discover Your Weight</h3>
-                      <p className="text-gray-400 text-sm">Enter your Earth weight to see how much you would weigh on other planets</p>
+                    <div className="text-center mb-8">
+                      <h3 className="text-white text-xl font-medium mb-2">Discover Your Weight</h3>
+                      <p className="text-gray-400 text-sm mx-4">Enter your Earth weight to see how much you would weigh on other planets</p>
                     </div>
-                    <div className="w-full max-w-[220px] mx-auto">
-                      <input
-                        type="number"
-                        value={earthWeight}
-                        onChange={(e) => setEarthWeight(e.target.value)}
-                        className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-3"
-                        placeholder="Enter your weight"
-                        required
-                        min="0"
-                        step="1"
-                      />
+                    <div className="w-full max-w-[280px] mx-auto px-6">
+                      <div className="relative mb-5">
+                        <input
+                          type="number"
+                          inputMode="decimal"
+                          value={earthWeight}
+                          onChange={(e) => setEarthWeight(e.target.value)}
+                          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-4 text-white text-xl text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          placeholder="Enter your weight"
+                          required
+                          min="0"
+                          step="0.1"
+                        />
+                        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 text-lg">
+                          kg
+                        </div>
+                      </div>
                       <button
                         onClick={(e) => handleCalculate(e)}
                         disabled={isLoading}
-                        className={`w-full py-3 px-4 rounded-md text-white font-medium text-lg transition ${
+                        className={`w-full py-4 px-4 rounded-lg text-white font-medium text-xl transition-all active:scale-95 ${
                           isLoading
                             ? 'bg-gray-600 cursor-not-allowed'
-                            : 'bg-indigo-600 hover:bg-indigo-700'
+                            : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg'
                         }`}
                       >
                         {isLoading ? (
                           <div className="flex items-center justify-center">
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
@@ -601,7 +626,7 @@ function App() {
               </div>
 
               {/* Right Panel - Planet Display */}
-              <div className="flex-1 bg-gray-950/50 backdrop-blur-md overflow-y-auto p-4">
+              <div className="flex-1 bg-gray-950/50 backdrop-blur-md overflow-y-auto p-2 sm:p-4">
                 {planetWeights.length > 0 && (
                   <AnimatePresence mode="wait">
                     <PlanetCard
@@ -615,58 +640,19 @@ function App() {
           )}
 
           {activeTab === 'apod' && randomApod && (
-            <motion.div
-              key="apod"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="h-full overflow-y-auto bg-gray-950/50 backdrop-blur-md p-6"
-            >
-              <div className="max-w-4xl mx-auto">
-                <div className="bg-gray-900/70 backdrop-blur-md rounded-xl overflow-hidden border border-gray-800">
-                  <div className="p-6 border-b border-gray-800">
-                    <h2 className="text-2xl font-bold text-white">{randomApod.title}</h2>
-                    <p className="text-gray-400 text-sm mt-1">
-                      {new Date(randomApod.date).toLocaleDateString()} - NASA Astronomy Picture of the Day
-                    </p>
-                  </div>
-
-                  <div className="border-b border-gray-800">
-                    {randomApod.media_type === 'video' ? (
-                      <div className="relative aspect-video">
-                        <iframe
-                          src={randomApod.url}
-                          title={randomApod.title}
-                          className="absolute inset-0 w-full h-full"
-                          frameBorder="0"
-                          allowFullScreen
-                        ></iframe>
-                      </div>
-                    ) : (
-                      <img
-                        src={randomApod.url}
-                        alt={randomApod.title}
-                        className="w-full h-auto"
-                      />
-                    )}
-                  </div>
-
-                  <div className="p-6">
-                    <p className="text-gray-300 leading-relaxed whitespace-pre-line">{randomApod.explanation}</p>
-
-                    <div className="mt-6 flex justify-end">
-                      <button
-                        onClick={handleRandomApod}
-                        disabled={apodLoading}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-                      >
-                        {apodLoading ? 'Loading...' : 'New Random Photo'}
-                      </button>
-                    </div>
-                  </div>
+            <Suspense fallback={
+              <div className="h-full flex items-center justify-center bg-gray-950/50 backdrop-blur-md">
+                <div className="text-white flex flex-col items-center">
+                  <svg className="animate-spin h-8 w-8 text-indigo-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Loading space image...
                 </div>
               </div>
-            </motion.div>
+            }>
+              <ApodView randomApod={randomApod} handleRandomApod={handleRandomApod} apodLoading={apodLoading} />
+            </Suspense>
           )}
         </AnimatePresence>
       </main>
