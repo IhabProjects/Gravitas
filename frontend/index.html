@@ -1,10 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <link rel="icon" type="image/svg+xml" href="/planet.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#090e29" />
+
+    <!-- Primary Meta Tags -->
+    <title>Gravitas - Explore Your Weight Across The Solar System</title>
+    <meta name="title" content="Gravitas - Explore Your Weight Across The Solar System">
+    <meta name="description" content="Discover how your weight changes on different planets and celestial bodies. Learn fascinating facts about our solar system with this interactive astronomical tool.">
+    <meta name="keywords" content="planetary weight calculator, solar system, astronomy, space exploration, gravity calculator, planetary facts">
+    <meta name="author" content="Ihab Elbani">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gravitas-explorer.vercel.app/">
+    <meta property="og:title" content="Gravitas - Explore Your Weight Across The Solar System">
+    <meta property="og:description" content="Discover how your weight changes on different planets and celestial bodies. Learn fascinating facts about our solar system with this interactive astronomical tool.">
+    <meta property="og:image" content="https://gravitas-explorer.vercel.app/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gravitas-explorer.vercel.app/">
+    <meta property="twitter:title" content="Gravitas - Explore Your Weight Across The Solar System">
+    <meta property="twitter:description" content="Discover how your weight changes on different planets and celestial bodies. Learn fascinating facts about our solar system with this interactive astronomical tool.">
+    <meta property="twitter:image" content="https://gravitas-explorer.vercel.app/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://gravitas-explorer.vercel.app/">
+
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Gravitas",
+        "url": "https://gravitas-explorer.vercel.app",
+        "description": "An interactive tool to explore weight variations across different celestial bodies in our solar system.",
+        "applicationCategory": "EducationalApplication",
+        "genre": "astronomy",
+        "operatingSystem": "Web Browser",
+        "author": {
+          "@type": "Person",
+          "name": "Ihab Elbani"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does gravity affect my weight on different planets?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your weight changes on different planets because each planet has a different gravitational pull. This is determined by the planet's mass and size. For example, on Jupiter you would weigh about 2.34 times your Earth weight, while on Mars you'd weigh only 0.38 times your Earth weight."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which planet has the strongest gravity in our solar system?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Jupiter has the strongest gravity of all planets in our solar system. If you weigh 70 kg on Earth, you would weigh about 164 kg on Jupiter. This is because Jupiter is the most massive planet, containing 2.5 times all the mass of all other planets combined."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does my mass change when I travel to different planets?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, your mass does not change when you travel to different planets. Mass is a measure of the amount of matter in your body, which remains constant. What changes is your weight, which is the force of gravity acting on your mass."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What would happen to my weight in a Black Hole?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In the extreme gravity of a Black Hole, the concept of weight as we understand it breaks down. The gravitational force would be so strong that it would literally tear your atoms apart through a process called spaghettification before you even reached the event horizon."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <!-- Additional SEO-friendly tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gravitas">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
   </head>
   <body>
     <div id="root"></div>

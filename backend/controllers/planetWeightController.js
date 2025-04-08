@@ -1,28 +1,49 @@
+// backend/controllers/planetWeightController.js
 const calculatePlanetWeight = (req, res) => {
-  const { weight, planet } = req.body; // Destructure the request body
+    try {
+      // Log the incoming request body for debugging
+      console.log('Received request body:', req.body);
 
-  if (!weight || !planet) {
-    return res.status(400).json({ error: "Weight and planet are required." });
-  }
+      // Ensure earthWeight is parsed as a number
+      const earthWeight = parseFloat(req.body.earthWeight);
 
-  const planetGravities = {
-    mercury: 0.378,
-    venus: 0.907,
-    mars: 0.377,
-    jupiter: 2.364,
-    saturn: 0.916,
-    uranus: 0.889,
-    neptune: 1.12,
+      // Validate input
+      if (!earthWeight || isNaN(earthWeight)) {
+        console.error('Invalid weight input:', req.body.earthWeight);
+        return res.status(400).json({
+          error: 'Invalid weight input',
+          receivedValue: req.body.earthWeight
+        });
+      }
+
+      // Planet gravity relative to Earth
+      const planetGravities = {
+        Mercury: 0.38,
+        Venus: 0.91,
+        Mars: 0.38,
+        Jupiter: 2.34,
+        Saturn: 1.06,
+        Uranus: 0.92,
+        Neptune: 1.19,
+        Pluto: 0.06
+      };
+
+      const planetWeights = Object.entries(planetGravities).map(([planet, gravity]) => ({
+        planet,
+        weight: (earthWeight * gravity).toFixed(2)
+      }));
+
+      // Log the calculated weights
+      console.log('Calculated planet weights:', planetWeights);
+
+      res.status(200).json(planetWeights);
+    } catch (error) {
+      console.error('Weight calculation error:', error);
+      res.status(500).json({
+        error: 'Internal server error',
+        details: error.message
+      });
+    }
   };
 
-  const planetWeights = Object.entries(planetGravities).map(
-    ([planet, gravity]) => {
-      planet, (weight = (earthWeight * gravity).toFixed(2));
-    }
-  );
-  res.json(planetWeights);
-};
-
-module.exports = {
-  calculatePlanetWeight,
-};
+  module.exports = { calculatePlanetWeight };

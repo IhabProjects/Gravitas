@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Planet body with gradient -->
+  <circle cx="256" cy="256" r="200" fill="url(#planetGradient)" />
+
+  <!-- Planet ring -->
+  <ellipse cx="256" cy="256" rx="240" ry="60" transform="rotate(-20 256 256)" fill="url(#ringGradient)" fill-opacity="0.7" />
+
+  <!-- Surface details -->
+  <circle cx="176" cy="200" r="30" fill="#9C78DA" fill-opacity="0.3" />
+  <circle cx="320" cy="180" r="40" fill="#6366F1" fill-opacity="0.4" />
+  <circle cx="280" cy="300" r="45" fill="#818CF8" fill-opacity="0.3" />
+
+  <!-- Moon -->
+  <circle cx="100" cy="150" r="20" fill="#E2E8F0" />
+
+  <!-- Stars -->
+  <circle cx="50" cy="50" r="3" fill="white" />
+  <circle cx="450" cy="80" r="2" fill="white" />
+  <circle cx="400" cy="400" r="2.5" fill="white" />
+  <circle cx="80" cy="380" r="2" fill="white" />
+  <circle cx="480" cy="300" r="3" fill="white" />
+  <circle cx="120" cy="450" r="2" fill="white" />
+
+  <!-- Definitions -->
+  <defs>
+    <radialGradient id="planetGradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(200 180) rotate(60.2551) scale(320)">
+      <stop offset="0" stop-color="#9089FC" />
+      <stop offset="0.7" stop-color="#4338CA" />
+      <stop offset="1" stop-color="#312E81" />
+    </radialGradient>
+    <radialGradient id="ringGradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(250 256) rotate(74.3883) scale(120 300)">
+      <stop offset="0.2" stop-color="#D8B4FE" />
+      <stop offset="0.6" stop-color="#8B5CF6" />
+      <stop offset="1" stop-color="#4F46E5" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+</svg>

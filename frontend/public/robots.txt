@@ -1,0 +1,9 @@
+# Allow all web crawlers to access all content
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://gravitas-explorer.vercel.app/sitemap.xml
+
+# Disallow backend API
+Disallow: /api/

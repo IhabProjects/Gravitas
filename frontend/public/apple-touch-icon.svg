@@ -1,0 +1,22 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="180" height="180" rx="45" fill="#090e29"/>
+
+  <!-- Planet graphic -->
+  <circle cx="90" cy="90" r="60" fill="url(#planet-gradient)"/>
+  <ellipse cx="90" cy="90" rx="60" ry="15" fill="#0c2046" opacity="0.7"/>
+
+  <!-- Orbital ring -->
+  <ellipse cx="90" cy="90" rx="75" ry="75" stroke="white" stroke-width="2" stroke-opacity="0.3" fill="none" stroke-dasharray="4 2"/>
+
+  <!-- Small moon -->
+  <circle cx="140" cy="60" r="8" fill="#c8c8c8"/>
+
+  <!-- Gradient definition -->
+  <defs>
+    <radialGradient id="planet-gradient" cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+      <stop offset="0%" stop-color="#4C54D2"/>
+      <stop offset="100%" stop-color="#162869"/>
+    </radialGradient>
+  </defs>
+</svg>
