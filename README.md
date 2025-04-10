@@ -40,7 +40,7 @@ Gravitas is fully optimized for mobile devices:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/gravitas.git
+   git clone https://github.com/IhabProjects/gravitas.git
    cd gravitas
    ```
 
